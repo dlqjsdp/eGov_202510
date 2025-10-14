@@ -23,6 +23,8 @@
 <!--         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/> -->
 <!--         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/> -->
     </context:component-scan>
+    
+    <mvc:annotation-driven />
 
 
 	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />

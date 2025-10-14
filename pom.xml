@@ -16,19 +16,23 @@
 
 	<repositories>
 	  <repository>
-	    <id>central</id>
-	    <url>https://repo1.maven.org/maven2/</url>
-	    <releases><enabled>true</enabled></releases>
-	    <snapshots><enabled>false</enabled></snapshots>
+		<id>mvn2</id>
+		<url>http://repo1.maven.org/maven2/</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
 	  </repository>
 	  <repository>
 	    <id>egovframe</id>
-	    <url>https://www.egovframe.go.kr/maven/</url>
+	    <url>http://www.egovframe.go.kr/maven/</url>
 	    <releases><enabled>true</enabled></releases>
 	    <snapshots><enabled>false</enabled></snapshots>
 	  </repository>
 	  
-	  <!--  주석처리
+	  
 		<repository>
 			<id>egovframe2</id>
 			<url>https://maven.egovframe.kr:8080/maven/</url>
@@ -39,11 +43,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		-->
+		
 		
 		<repository>
 		  <id>egovframe-backup</id>
-		  <url>https://maven.egovframe.go.kr/maven/</url>
+		  <url>http://maven.egovframe.go.kr/maven/</url>
 		  <releases><enabled>true</enabled></releases>
 		  <snapshots><enabled>false</enabled></snapshots>
 		</repository>
@@ -52,7 +56,7 @@
 	<pluginRepositories>
 	  <pluginRepository>
 	    <id>egovframe</id>
-	    <url>https://www.egovframe.go.kr/maven/</url>
+	    <url>http://www.egovframe.go.kr/maven/</url>
 	  </pluginRepository>
 	</pluginRepositories>
 

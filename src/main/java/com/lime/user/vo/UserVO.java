@@ -1,5 +1,17 @@
 package com.lime.user.vo;
 
+/**
+ * @Class Name  : UserVO.java
+ * @Description : 회원 정보를 담는 VO 클래스
+ * @Modification Information
+ * 
+ *     수정일                        수정자                     수정내용
+ *     ----------    ---------    -------------------------------
+ *     2025.10.14     노유경                   필드명 오타(usrr → user) 수정
+ *     
+ */
+
+
 public class UserVO {
 
 	private String userSeq   ;
@@ -8,11 +20,11 @@ public class UserVO {
 	private String userName  ;
 	private String regDt  ;
 
-	public String getUsrrSeq() {
+	public String getUserSeq() {
 		return userSeq;
 	}
-	public void setUsrrSeq(String usrrSeq) {
-		this.userSeq = usrrSeq;
+	public void setUserSeq(String userSeq) {
+		this.userSeq = userSeq;
 	}
 	public String getUserId() {
 		return userId;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+
+@Class Name  : User_SQL.xml
+@Description : 회원 관련 SQL 구문 (회원가입 및 ID 중복검사)
+@Modification Information
+
+      수정일                       수정자        수정내용
+   2025.10.14    노유경        최초 생성 (회원가입 및 ID 중복검사 쿼리 작성)
+   2025.10.14    노유경        컬럼명(DB)과 VO 속성명 매핑 수정 (USER_ID, USER_NAME 등 대문자 통일)
+   
+-->
+
+<mapper namespace="User">
+
+	<!-- ID 중복 검사 -->
+	<select id="countByUserId" parameterType="string" resultType="int">
+	select count(*)
+	from USER_TB
+	where USER_ID = #{value}
+	</select>
+
+	<!-- 회원 등록 -->
+	<insert id="insertUser" parameterType="com.lime.user.vo.UserVO">
+	insert into USER_TB(
+	USER_ID, PWD, USER_NAME, REG_DT
+	) values (
+	#{userId}, #{pwd}, #{userName}, now()
+	)
+	
+	</insert>
+
+</mapper>

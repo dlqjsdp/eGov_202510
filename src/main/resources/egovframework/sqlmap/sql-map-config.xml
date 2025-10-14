@@ -4,4 +4,5 @@
 <sqlMapConfig>
 	<sqlMap resource="egovframework/sqlmap/mappers/login/Login_SQL.xml"/>
 	<sqlMap resource="egovframework/sqlmap/mappers/common/Common_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/mappers/user/User_SQL.xml"/> <!-- 추가 -->
 </sqlMapConfig>

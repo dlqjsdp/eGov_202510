@@ -14,7 +14,7 @@
 		<property name="dataSource" ref="dataSource" />
 
 		<property name="configLocation" value="classpath:/egovframework/sqlmap/sql-mapper-config.xml" />
-		<property name="mapperLocations" value="classpath:/egovframework/sqlmap/mappers/*/*.xml" />
+		<property name="mapperLocations" value="classpath*:egovframework/sqlmap/mappers/**/*.xml" />
 <!-- 		<property name="mapperLocations" value="classpath:/egovframework/sqlmap/sql-map-config.xml" /> -->
 
 <!-- 		<property name="configLocation" value="classpath:/egovframework/sqlmap/example/sql-mapper-config.xml" /> -->
