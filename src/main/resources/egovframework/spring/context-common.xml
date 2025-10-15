@@ -7,6 +7,11 @@
     <context:component-scan base-package="egovframework">
        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
+    
+    <context:component-scan base-package="egovframework, com.lime">
+	    <context:exclude-filter type="annotation"
+	        expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">

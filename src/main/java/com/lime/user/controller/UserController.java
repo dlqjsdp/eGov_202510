@@ -19,7 +19,7 @@ import com.lime.user.vo.UserVO;
  * 
  *     수정일                       수정자                    수정내용
  *     ----------    ---------    -------------------------------
- *     2025.10.14    노유경                     회원가입 폼, ID 중복검사, 회원가입 처리
+ *     2025.10.15    노유경                     회원가입 폼, ID 중복검사, 회원가입 처리
  */
 
 @Controller
@@ -29,25 +29,25 @@ public class UserController {
     @Resource(name = "userService")
     private UserService userService;
 
-    /** 회원가입 폼 페이지 진입 */
+    // 회원가입 폼 페이지 진입
     @RequestMapping(value="/userInsert.do", method=RequestMethod.GET)
     public String userInsertForm() {
         return "/user/userInsert"; // JSP: /WEB-INF/jsp/user/userInsert.jsp
     }
 
-    /** ID 중복체크 (AJAX) */
+    // ID 중복체크 (AJAX)
     @ResponseBody
     @RequestMapping(value="/checkId.do", method=RequestMethod.GET, produces="application/json; charset=UTF-8")
     public Map<String, Object> checkId(@RequestParam("userId") String userId) {
-        boolean available = userService.isAvailableUserId(userId);
+        boolean exist = userService.existsUserId(userId);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("available", available);
-        result.put("message", available ? "사용 가능한 ID입니다." : "이미 사용 중인 ID입니다.");
+        result.put("available", exist);
+        result.put("message", exist ? "사용 가능한 ID입니다." : "이미 사용 중인 ID입니다.");
         return result;
     }
 
-    /** 회원가입 처리 */
+    // 회원가입 처리
     @RequestMapping(value="/insertUser.do", method=RequestMethod.POST)
     public String insertUser(
             @RequestParam("userId") String userId,

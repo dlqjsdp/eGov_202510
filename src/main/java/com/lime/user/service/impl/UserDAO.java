@@ -25,13 +25,15 @@ public class UserDAO {
 	private SqlSessionTemplate sqlSession;
 	
 	// 아이디 중복체크
-	public int countByUserId(String userId){
-		return sqlSession.selectOne("User.countByUserId", userId);
+	public int checkId(String userId){
+		return sqlSession.selectOne("User.checkId", userId); 
+		// User_SQL.xml의  <select id="checkId">과 연결
 	}
 	
 	// 회원가입
 	public void insertUser(UserVO vo) {
-		sqlSession.insert("User.insertUser", vo);
+		sqlSession.insert("User.insertUser", vo); 
+		// User_SQL.xml의  <insert id="insertUser">과 연결
 	}
 
 }

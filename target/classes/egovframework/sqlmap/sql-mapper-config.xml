@@ -2,10 +2,24 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <typeAliases>
-		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-		<typeAlias alias="searchVO" type="egovframework.example.sample.service.SampleDefaultVO"/>
-		<typeAlias alias="sampleVO" type="egovframework.example.sample.service.SampleVO"/>
-		<typeAlias alias="userVO" type="com.lime.user.vo.UserVO"/>
-    </typeAliases>
+
+  <!-- 전역 설정: 로그/매핑 규칙 -->
+  <settings>
+    <!-- 콘솔에 실행 SQL(+파라미터) 출력 -->
+    <setting name="logImpl" value="STDOUT_LOGGING"/>
+    <!-- DB 컬럼명이 USER_ID 처럼 스네이크면, VO의 userId 로 자동 매핑 -->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
+
+  <!-- 타입 별칭 -->
+  <typeAliases>
+    <!-- eGov 기본 예제(사용 안 하면 지워도 OK) -->
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias alias="searchVO" type="egovframework.example.sample.service.SampleDefaultVO"/>
+    <typeAlias alias="sampleVO" type="egovframework.example.sample.service.SampleVO"/>
+
+    <!-- 실제 사용 -->
+    <typeAlias alias="userVO" type="com.lime.user.vo.UserVO"/>
+  </typeAliases>
+
 </configuration>

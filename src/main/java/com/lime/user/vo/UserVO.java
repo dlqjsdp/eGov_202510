@@ -1,5 +1,7 @@
 package com.lime.user.vo;
 
+import java.time.LocalDate;
+
 /**
  * @Class Name  : UserVO.java
  * @Description : 회원 정보를 담는 VO 클래스
@@ -8,22 +10,23 @@ package com.lime.user.vo;
  *     수정일                        수정자                     수정내용
  *     ----------    ---------    -------------------------------
  *     2025.10.14     노유경                   필드명 오타(usrr → user) 수정
+ *     2025.10.15     노유경                   REG_DT 컬럼 타입 변경에 맞춰 LocalDate로 타입 수정
  *     
  */
 
 
 public class UserVO {
 
-	private String userSeq   ;
-	private String userId  ;
-	private String pwd  ;
-	private String userName  ;
-	private String regDt  ;
+	private Long userSeq; // 자동 증가 값
+	private String userId; // 로그인 ID
+	private String pwd; // 비밀번호
+	private String userName; // 사용자 이름
+	private java.sql.Date regDt; // 등록일시
 
-	public String getUserSeq() {
+	public Long getUserSeq() {
 		return userSeq;
 	}
-	public void setUserSeq(String userSeq) {
+	public void setUserSeq(Long userSeq) {
 		this.userSeq = userSeq;
 	}
 	public String getUserId() {
@@ -44,16 +47,11 @@ public class UserVO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getRegDt() {
+	public java.sql.Date getRegDt() {
 		return regDt;
 	}
-	public void setRegDt(String regDt) {
+	public void setRegDt(java.sql.Date regDt) {
 		this.regDt = regDt;
 	}
-
-
-
-
-
 
 }
