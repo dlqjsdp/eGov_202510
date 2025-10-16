@@ -24,16 +24,20 @@ public class UserDAO {
 	@Resource(name="sqlSessionTemplate") 
 	private SqlSessionTemplate sqlSession;
 	
-	// 아이디 중복체크
+	// 아이디 중복체크 (User_SQL.xml의  <select id="checkId">과 연결)
 	public int checkId(String userId){
-		return sqlSession.selectOne("User.checkId", userId); 
-		// User_SQL.xml의  <select id="checkId">과 연결
+		System.out.println("DAO checkId 호출 - userid: " + userId);
+		int count = sqlSession.selectOne("User.checkId", userId);
+		
+		System.out.println("DAO checkId() 결과 - 동일 ID 개수: " + count);
+		return count;
 	}
 	
-	// 회원가입
+	// 회원가입 (User_SQL.xml의  <insert id="insertUser">과 연결)
 	public void insertUser(UserVO vo) {
+		System.out.println("DAO insertUser 호출: - ID" + vo.getUserId());
 		sqlSession.insert("User.insertUser", vo); 
-		// User_SQL.xml의  <insert id="insertUser">과 연결
+		
+		System.out.println("DAO insertUser 완료");
 	}
-
 }

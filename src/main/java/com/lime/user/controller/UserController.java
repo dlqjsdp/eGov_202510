@@ -19,7 +19,9 @@ import com.lime.user.vo.UserVO;
  * 
  *     수정일                       수정자                    수정내용
  *     ----------    ---------    -------------------------------
- *     2025.10.15    노유경                     회원가입 폼, ID 중복검사, 회원가입 처리
+ *     2025.10.16    노유경                     회원가입 폼, ID 중복검사, 회원가입 처리
+ *     2025.10.16    노유경                     메서드명 수정 (existsUserId -> isAvailableUserId)
+ *     2025.10.16    노유경                     회원가입 시 아이디 null/공백 유효성 검증 추가
  */
 
 @Controller
@@ -37,31 +39,46 @@ public class UserController {
 
     // ID 중복체크 (AJAX)
     @ResponseBody
-    @RequestMapping(value="/checkId.do", method=RequestMethod.GET, produces="application/json; charset=UTF-8")
+    @RequestMapping(value="/checkId.do", method=RequestMethod.GET)
     public Map<String, Object> checkId(@RequestParam("userId") String userId) {
-        boolean exist = userService.existsUserId(userId);
+        boolean available = userService.isAvailableUserId(userId);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("available", exist);
-        result.put("message", exist ? "사용 가능한 ID입니다." : "이미 사용 중인 ID입니다.");
+        System.out.println("전달 받은 ID: " + userId);
+        
+        result.put("available", available);
+        result.put("message", available ? "사용 가능한 ID입니다." : "사용 불가능한 ID입니다.");
         return result;
     }
 
     // 회원가입 처리
+    @ResponseBody
     @RequestMapping(value="/insertUser.do", method=RequestMethod.POST)
-    public String insertUser(
-            @RequestParam("userId") String userId,
-            @RequestParam("pwd") String pwd,
-            @RequestParam("userName") String userName,
-            RedirectAttributes ra) {
-
-        UserVO vo = new UserVO();
-        vo.setUserId(userId);
-        vo.setPwd(pwd);
-        vo.setUserName(userName);
-
-        userService.register(vo);
-        ra.addFlashAttribute("msg", "회원가입이 완료되었습니다!");
-        return "redirect:/login/login.do";
+    public Map<String, Object> insertUser(@RequestBody UserVO vo) {
+    	Map<String, Object> result = new HashMap<>();
+    	
+    	System.out.println("===============================");
+    	System.out.println("userId : " + vo.getUserId());
+        System.out.println("pwd : " + vo.getPwd());
+        System.out.println("userName : " + vo.getUserName());
+        System.out.println("===============================");
+    	
+    	// 아이디 누락 체크
+        if (vo == null || vo.getUserId() == null || vo.getUserId().trim().isEmpty()) {
+            result.put("success", false);
+            result.put("message", "아이디를 입력해 주세요.");
+            return result; // JSON 응답 반환
+        }
+        
+    	try{ // 회원가입 서비스 호출
+    		userService.register(vo);
+    		result.put("success", true);
+    		result.put("message", "회원가입이 완료되었습니다.");
+    	}catch(Exception e) {
+    		result.put("success", false);
+    		result.put("message", "회원가입 중 오류가 발생했습니다.");
+    	}
+        
+    	return result; // 결과 반환
     }
 }
