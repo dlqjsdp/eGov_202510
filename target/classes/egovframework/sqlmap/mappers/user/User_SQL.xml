@@ -23,7 +23,7 @@
 		<result property="userId" column="USER_ID" />
 		<result property="pwd" column="PWD" />
 		<result property="userName" column="USER_NAME" />
-		<result property="regDt"   column="REG_DT" jdbcType="DATE"/>
+		<result property="regDt" column="REG_DT" jdbcType="DATE"/>
 	</resultMap>
 
 	<!-- ID 중복 검사 -->

@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+  @Class Name  : Login_SQL.xml
+  @Description : 로그인 관련 SQL 구문 (사용자 아이디 기반 회원 정보 조회)
+  @Modification Information
+           수정일                           수정자          수정내용
+     2025.10.17      노유경         resultMap(userVO) 추가 및 컬럼-필드 매핑 명시
+     2025.10.17      노유경         사용자 아이디 기준 단건 조회 쿼리(findByUserId) 구현
+-->
 <mapper namespace="Login">
 
-	<resultMap id="userVO" type="com.lime.user.vo.UserVO">
-		<result property="userSeq" column="User_seq"/>
-		<result property="userId" column="user_id"/>
-		<result property="pwd" column="pwd"/>
-		<result property="userName" column="user_name"/>
-		<result property="regDt" column="reg_dt"/>
-	</resultMap>
 
+	<!-- 컬럼과 필드면 매핑 -->
+	<resultMap id="userVO" type="com.lime.user.vo.UserVO">
+		<result property="userSeq" column="USER_SEQ"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="pwd" column="PWD"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="regDt" column="REG_DT"/>
+	</resultMap>
+	
+
+	<!-- 사용자 아이디로 회원 정보 조회 -->
+	<select id="findById" resultMap="userVO">
+		select * 
+		from USER_TB 
+		where USER_ID = #{value}
+	</select>
 
 
 </mapper>

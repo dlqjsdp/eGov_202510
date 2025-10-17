@@ -16,7 +16,7 @@ import com.lime.user.vo.UserVO;
  *     수정일                        수정자                     수정내용
  *     ----------    ---------    -------------------------------
  *     2025.10.15     노유경                   최초 생성 (회원가입 및 ID 중복검사 기능 구현)
- *     2025.10.16     노유경                    메서드명 수정 (existsUserId -> isAvailableUserId)
+ *     2025.10.16     노유경                   메서드명 수정 (existsUserId -> isAvailableUserId)
  *     
  *     
  */
