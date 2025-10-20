@@ -23,7 +23,4 @@ public class CommonServiceImpl implements CommonService {
 		return commonDAO.selectCombo(inOutMap);
 	}
 
-
-
-
 }

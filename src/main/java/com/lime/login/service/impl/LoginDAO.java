@@ -26,7 +26,7 @@ public class LoginDAO {
 	
 	// 사용자 아이디로 회원 정보 조회
 	public UserVO findByUserId(String userId) {
-		UserVO uservo = sqlSession.selectOne("Login.findById", userId);
+		UserVO uservo = sqlSession.selectOne("Login.findByUserId", userId);
 		
 		System.out.println("[LoginDAO] findByUserId 실행 - 조회 아이디: " + userId);
 		return uservo;

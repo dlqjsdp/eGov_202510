@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+@File Name      : Account_SQL.xml
+@Class Name     : Account_SQL
+@Description    : 회계(Account) 관련 SQL 매퍼 파일
+@Modification Information
+       
+         수정일                  수정자         수정내용
+    2025.10.20    노유경        ACCOUNT_TB 데이터 등록(INSERT) 쿼리 추가
+       
+@since 2025.10.20
+@version 1.0
+-->
+
+<mapper namespace="Account">
+	
+	<!-- 데이터 등록하기 -->
+	<insert id="insertAccount" parameterType="egovMap">
+		insert into ACCOUNT_TB (
+			PROFIT_COST, BIG_GROUP, MIDDLE_GROUP, SMALL_GROUP, DETAIL_GROUP,
+			COMMENTS, TRANSACTION_MONEY, TRANSACTION_DATE, WRITER, REG_DATE
+			)
+			values (
+			#{profitCost}, #{bigGroup}, #{middleGroup}, #{smallGroup}, #{detailGroup},
+    		#{comments}, #{transactionMoney}, #{transactionDate}, #{writer}, NOW()
+			)			
+	</insert>
+	
+</mapper>

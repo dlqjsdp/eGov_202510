@@ -22,7 +22,7 @@
 	
 
 	<!-- 사용자 아이디로 회원 정보 조회 -->
-	<select id="findById" resultMap="userVO">
+	<select id="findByUserId" resultMap="userVO">
 		select * 
 		from USER_TB 
 		where USER_ID = #{value}
