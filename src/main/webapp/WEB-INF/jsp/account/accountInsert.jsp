@@ -4,110 +4,134 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<script src="/js/common.js"></script>
+
 <script>
 $(document).ready(function(){
+
+	// 1. 하위 select 채우기
+	function loadChildren(parentCode, $target, firstAsNone) {
+		
+		// 기본 옵션 구성
+		const baseOption = firstAsNone
+		  ? '<option value="0">해당없음</option>'
+		  : '<option value="">선택</option>';
+		
+		// 상위 코드가 없을 경우 기본 옵션만 표시하고 종료
+		if (!parentCode) {
+		  $target.html(baseOption);
+		  return;
+		}
+		
+		// 하위 코드 목록을 서버에서 가져옴 (AJAX)
+		$.ajax({
+			url: '/account/selectCombo.do',
+			type: 'GET',
+			dataType: 'json',
+			data: {category: parentCode}, // 서버로 보낼 파라미터: category=상위코드
+			success: function(res) {
+				console.log('selectCombo res =', res);
+				
+				// 1) 응답 리스트 추출 (배열이 아닐 경우 빈 배열)
+				const list = (res && Array.isArray(res.list)) ? res.list : [];
+				
+			    // 2) for문으로 <option> 생성: 기본옵션 + 데이터 옵션
+			    let html = baseOption;
+				for (let i = 0; i < list.length; i++) {
+					const row = list[i];
+					const code = row.code || row.CODE; // 대/소문자 동시 대응
+			        const name = row.comKor || row.COM_KOR; // 대/소문자 동시 대응
+
+			        html += '<option value="' + code + '">' + name + '</option>';
+				}
+				
+				// 3) 하위 select 태그에 넣기
+				$target.html(html);
+			},
+			
+			// 4) 오류 처리
+			error: function(){
+				alert('코드 조회 중 오류가 발생했습니다.');
+				$target.html(baseOption); // 실패 시에도 기본옵션 유지
+			}
+		});
+	}
+
 	
-	// 공통: 하위 코드 로딩
-	  function loadCodes(parentCode, $target){
-	    if(!parentCode){ $target.html('<option value="">선택</option>'); return; }
-	    $.ajax({
-	      url: "<c:url value='/account/selectCombo.do'/>",
-	      type: "GET",
-	      dataType: "json",
-	      data: { category: parentCode },   // 컨트롤러에서 CommUtils로 받는 키: category
-	      success: function(res){
-	        // res.list 형태로 온다는 가정 (만약 res 자체가 리스트면 아래 한 줄 수정)
-	        var list = res.list || res;
-	        $target.empty().append('<option value="">선택</option>');
-	        $.each(list, function(_, row){
-	          // EgovMap은 보통 대문자 키(CODE, COM_KOR)
-	          var code = row.CODE || row.code;
-	          var name = row.COM_KOR || row.comKor;
-	          $target.append('<option value="'+ code +'">'+ name +'</option>');
-	        });
-	      },
-	      error: function(){ alert("코드 조회 중 오류가 발생했습니다."); }
-	    });
-	  }
-
-	  // 1단계: profitCost → bigGroup
-	  $('#profitCost').on('change', function(){
-	    var v = $(this).val();
-	    $('#bigGroup').html('<option value="">선택</option>');
-	    $('#middleGroup').html('<option value="0">해당없음</option>');
-	    $('#smallGroup').html('<option value="0">해당없음</option>');
-	    $('#detailGroup').html('<option value="0">해당없음</option>');
-	    if(v) loadCodes(v, $('#bigGroup'));
-	  });
-
-	  // 2단계: bigGroup → middleGroup
-	  $('#bigGroup').on('change', function(){
-	    var v = $(this).val();
-	    $('#middleGroup').html('<option value="">선택</option>');
-	    $('#smallGroup').html('<option value="0">해당없음</option>');
-	    $('#detailGroup').html('<option value="0">해당없음</option>');
-	    if(v) loadCodes(v, $('#middleGroup'));
-	  });
-
-	  // 3단계: middleGroup → smallGroup
-	  $('#middleGroup').on('change', function(){
-	    var v = $(this).val();
-	    $('#smallGroup').html('<option value="">선택</option>');
-	    $('#detailGroup').html('<option value="0">해당없음</option>');
-	    if(v) loadCodes(v, $('#smallGroup'));
-	  });
-
-	  // 4단계: smallGroup → detailGroup
-	  $('#smallGroup').on('change', function(){
-	    var v = $(this).val();
-	    $('#detailGroup').html('<option value="">선택</option>');
-	    if(v) loadCodes(v, $('#detailGroup'));
-	  });
-
-	  // 유효성 검사
-	  function validate(){
-	    if(!$('#profitCost').val()) { alert('대분류를 선택하세요.'); return false; }
-	    if(!$('input[name=transactionMoney]').val() || !/^\d+$/.test($('input[name=transactionMoney]').val())){
-	      alert('금액은 숫자만 입력하세요.'); return false;
-	    }
-	    if(!$('input[name=transactionDate]').val()){ alert('거래일자를 입력하세요.'); return false; }
-	    return true;
-	  }
-
-	  // 저장
-	  $('#saveBtn').on('click', function(){
-	    if(!validate()) return;
-
-	    const payload = {
-	      profitCost:   $('#profitCost').val(),
-	      bigGroup:     $('#bigGroup').val(),
-	      middleGroup:  $('#middleGroup').val(),
-	      smallGroup:   $('#smallGroup').val(),
-	      detailGroup:  $('#detailGroup').val(),
-	      comments:     $('input[name=comment]').val(),
-	      transactionMoney: $('input[name=transactionMoney]').val(),
-	      transactionDate:  $('input[name=transactionDate]').val(),
-	      // 서버에서 세션으로 채우면 제외 가능
-	      writer: '${LOGIN_USER.userId}'.trim() || 'admin'
-	    };
-
-	    $.ajax({
-	      url: "<c:url value='/account/accountInsertProc.do'/>",
-	      method: "POST",
-	      contentType: "application/json; charset=UTF-8",
-	      dataType: "json",
-	      data: JSON.stringify(payload)
-	    }).done(function(res){
-	      if(res && res.success){
-	        alert(res.message || '등록이 완료되었습니다.');
-	        location.href = "<c:url value='/account/accountList.do'/>";
-	      }else{
-	        alert((res && res.message) || '등록에 실패했습니다.');
-	      }
-	    }).fail(function(){
-	      alert('서버 오류가 발생했습니다.');
-	    });
-	  });
+	// 2. 체인 이벤트: 상위 선택 시 하위 초기화 및 로드
+	$('#profitCost').on('change', function(){
+		const code = $(this).val();
+		console.log('[profitCost change] code=', code);
+		loadChildren(code, $('#bigGroup'), false);
+		$('#middleGroup').html('<option value="0">해당없음</option>');
+		$('#smallGroup').html('<option value="0">해당없음</option>');
+		$('#detailGroup').html('<option value="0">해당없음</option>');
+	});
+	
+	$('#bigGroup').on('change', function(){
+		const code = $(this).val();
+		loadChildren(code, $('#middleGroup'), true);
+		$('#smallGroup').html('<option value="0">해당없음</option>');
+		$('#detailGroup').html('<option value="0">해당없음</option>');
+	});
+	
+	$('#middleGroup').on('change', function(){
+		const code = $(this).val();
+		loadChildren(code, $('#smallGroup'), true);
+		$('#detailGroup').html('<option value="0">해당없음</option>');
+	});
+	
+	$('#smallGroup').on('change', function(){
+		const code = $(this).val();
+		loadChildren(code, $('#detailGroup'), true);
+	});
+	
+	// 3. 등록(저장): 폼 값 수집 -> JSON POST -> 성공 시 이동
+	$('#saveBtn').on('click', function(e) {
+		e.preventDefault(); // 기본 폼 submit 방지(페이지 리로드 방지)
+		
+		const payload = {
+				profitCost: $('#profitCost').val(),
+				bigGroup: $('#bigGroup').val(),
+				middleGroup: $('#middleGroup').val(),
+				smallGroup: $('#smallGroup').val(),
+				detailGroup: $('#detailGroup').val(),
+				comments: $('#comments').val(),
+				transactionMoney: $('#transactionMoney').val(),
+				transactionDate: $('#transactionDate').val(),
+				// writer는 서버가 세션에서 주입
+		};
+		
+		// select null 값 방지
+		if(!payload.profitCost) {
+			alert('수익/비용 구분을 선택하세요.');
+			return;
+		}
+		
+		// 등록 API 호출(JSON POST)
+		$.ajax({
+			url: '/account/accountInsertProc.do',
+			type: 'POST',
+			contentType: 'application/json; charset=UTF-8', // 본문이 JSON
+			dataType: 'json', // 응답도 JSON 기대
+			data: JSON.stringify(payload), // 객체 → JSON 문자열
+			success: function(res) { // 서버 메시지 우선 표시, 없으면 성공/실패 기본 문구
+				alert(res.message || (res.success ? '등록 성공' : '등록 실패'));
+				if(res.success) {
+					// 서버가 accountSeq 내려주면 수정으로, 아니면 목록으로
+					if (res.accountSeq) {
+						location.href = '/account/accountModify.do?accountSeq=' + res.accountSeq;
+					}else{
+						location.href = '/account/accountList.do';
+					}
+				}
+			},
+			error: function(){
+				alert('서버 오류가 발생했습니다.')
+			}
+			
+		});
+	});
 
 });
 
@@ -139,13 +163,13 @@ $(document).ready(function(){
 				      </div>
 
 				      <div class="col-sm-3">
-						<select class="form-control" id="bigGroup"  name="bigGroup" title="관">
+						<select class="form-control" id="bigGroup" name="bigGroup" title="관">
 				        	<option value="">선택</option>
 				        </select>
 				      </div>
 
 				      <div class="col-sm-3">
-						<select class="form-control" id="middleGroup" name="middleGroup"  title="항">
+						<select class="form-control" id="middleGroup" name="middleGroup" title="항">
 					        	<option value="0">해당없음</option>
 				        </select>
 				      </div>
@@ -165,7 +189,7 @@ $(document).ready(function(){
 						        </select>
 					      </div>
 				      <div class="col-sm-9">
-				      		<input class="form-control" id="comment" name="comment" type="text" value="" placeholder="비용 상세 입력" title="비용 상세">
+				      		<input class="form-control"  id="comments" name="comments" type="text" value="" placeholder="비용 상세 입력" title="비용 상세">
 				      </div>
 			 		</div>
 
@@ -173,11 +197,19 @@ $(document).ready(function(){
 			 		<div class="col-sm-12">
 			 		  <label for="disabledInput" class="col-sm-1 control-label"><font size="1px">금액</font></label>
 				      <div class="col-sm-3">
-				        	<input class="form-control"  name="transactionMoney" type="text" value="" title="금액">
+				        	<input class="form-control"
+							       id="transactionMoney"
+							       name="transactionMoney"
+							       type="number"
+							       min="1"
+							       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+							       placeholder="숫자만 입력"
+							       title="금액">
 				      </div>
 			 		  <label for="disabledInput" class="col-sm-1 control-label"><font size="1px">거래일자</font></label>
 				      <div class="col-sm-3">
-				       	 <input class="form-contro col-sm-2"  name="transactionDate" type="text" value="" style="width: 80%" title="거래일자">
+				      	 <!-- datepicker 클래스 추가 -->
+				       	 <input class="form-control datepicker" id="transactionDate" name="transactionDate" type="text" value="" style="width: 80%" title="거래일자" placeholder="YYYY-MM-DD">
 				      </div>
 			 		</div>
 
@@ -187,7 +219,7 @@ $(document).ready(function(){
 					<!-- 등록/취소 버튼 추가 -->
 					<div class="col-sm-12 text-center" style="margin-top:16px; text-align: center;">
 						<button id="saveBtn" type="button" class="btn btn-primary">등록</button>
-						<button id="cancleBtn" type="button" class="btn btn-warning" onclick="history.back()">취소</button>
+						<button id="cancelBtn" type="button" class="btn btn-warning" onclick="history.back()">취소</button>
 					</div>
 			 </div>
 		</div>

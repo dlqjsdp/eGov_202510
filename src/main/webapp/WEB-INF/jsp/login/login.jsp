@@ -21,16 +21,19 @@
 	$(function () {
 	  // 동적 변경에도 안전한 위임 바인딩
 	  $(document).on('click', '#loginBtn', function (e) {
-	    e.preventDefault();
+	    e.preventDefault(); // <button>의 기본 form 제출 동작을 막고, AJAX로만 전송
 	
+	    // 입력값 가져오기
 	    const memId = $.trim($('#memId').val());
 	    const memPassword = $('#memPassword').val();
 	
+	    // 유효성 검사
 	    if (!memId || !memPassword) {
 	      alert('아이디와 비밀번호를 입력해주세요.');
 	      return;
 	    }
 	
+	    // AJAX 요청 (로그인 처리)
 	    $.ajax({
 	      url: "<c:url value='/login/loginProc.do'/>",
 	      method: 'POST',
@@ -38,7 +41,7 @@
 	      dataType: 'json',
 	      data: JSON.stringify({ userId: memId, pwd: memPassword })
 	    })
-	    .done(function (res) {
+	    .done(function (res) { // 요청 성공시 처리
 	    	if(res.success) {
 		      console.log('로그인 성공', res);
 		      alert(res.message || '로그인 성공');

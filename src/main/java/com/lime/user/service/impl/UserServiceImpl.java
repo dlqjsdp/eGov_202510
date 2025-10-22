@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService{
 		
 		// DAO에서 중복된 아이디 개수를 조회해서 0이면 사용가능
 		System.out.println("DB 조회 결과 - 동일 아이디 개수: " + count);
-		return count == 0;
+		return count == 0; // true 리턴
 	}
 
 	// 회원가입 (등록)

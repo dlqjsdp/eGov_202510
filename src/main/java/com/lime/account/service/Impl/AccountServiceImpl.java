@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.lime.account.service.AccountService;
+import com.lime.util.CommUtils;
 
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -31,13 +32,8 @@ public class AccountServiceImpl implements AccountService {
 	// 회계 정보 등록
 	@Override
 	public void insertAccount(EgovMap param) {
-		accountDAO.insertAccount(param);
 		
+		accountDAO.insertAccount(param);
 	}
-
-
-
-
-
 
 }

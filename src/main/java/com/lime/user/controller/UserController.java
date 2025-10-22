@@ -34,7 +34,7 @@ public class UserController {
     // 회원가입 폼 페이지 진입
     @RequestMapping(value="/userInsert.do", method=RequestMethod.GET)
     public String userInsertForm() {
-        return "/user/userInsert"; // JSP: /WEB-INF/jsp/user/userInsert.jsp
+        return "/user/userInsert"; 
     }
 
     // ID 중복체크 (AJAX)

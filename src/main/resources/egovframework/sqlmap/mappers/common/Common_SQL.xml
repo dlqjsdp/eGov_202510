@@ -6,16 +6,14 @@
 	<!-- 	코드 테이블 에서 셀렉트 박스 리스트 검색 -->
 	<select id="selectCombo" parameterType="map" resultType="egovMap">
 		SELECT
-		  CODE,
-		  COM_KOR
+		  CODE AS code,
+		  COM_KOR AS comKor
 		FROM CODE_MASTER
 		WHERE
 			CATEGORY = #{category}
 		AND
 			USE_YN     ='Y'
 	</select>
-
-
 
 
 </mapper>

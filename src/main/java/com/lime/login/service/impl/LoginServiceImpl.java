@@ -27,12 +27,12 @@ public class LoginServiceImpl implements LoginService{
 
 	@Override
 	public UserVO login(UserVO inputVO) {
-		UserVO dbUser = loginDAO.findByUserId(inputVO.getUserId());
+		UserVO dbUser = loginDAO.findByUserId(inputVO.getUserId()); // 존재하면 UserVO 객체 반환
 		
 		// 아이디 비교
-		if(dbUser == null) {
+		if(dbUser == null) { // 조회 결과가 없으면 아이디가 잘못된 것
 			System.out.println("[LoginServiceImpl] 아이디 없음");
-			return null;
+			return null; // 컨트롤러에서 실패처리
 		}
 		
 		// 비밀번호 비교

@@ -21,6 +21,7 @@ import com.lime.user.vo.UserVO;
 @Repository("userDAO")
 public class UserDAO {
 	
+	// GPT 참고
 	@Resource(name="sqlSessionTemplate") 
 	private SqlSessionTemplate sqlSession;
 	
