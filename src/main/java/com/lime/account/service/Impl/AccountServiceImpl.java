@@ -21,6 +21,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *     2025.10.21       노유경                       회계 정보 등록 기능 구현
  *     2025.10.22    	노유경       		자동 생성된 accountSeq 추출 로직 추가 및 형변환 처리(Number → long)
  *     2025.10.22    	노유경       		단건 조회(getAccountDetail), 수정(modifyAccount) 메서드 구조 추가
+ *     2025.10.23		노유경 			modifyAccount() 반환타입을 boolean으로 변경 및 로직 완성 (성공/실패 여부 반환)
  * 
  */
 
@@ -53,17 +54,30 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 
+	// 회계 정보 단건 조회
 	@Override
 	public EgovMap getAccountDetail(Long accountSeq) {
-		
-		return null;
+		System.out.println("[AccountServiceImpl] getAccountDetail() 호출됨" + accountSeq);
+		return accountDAO.selectAccountDetail(accountSeq);
 	}
 
 
+	// 회계 정보 수정
 	@Override
-	public int modifyAccount(EgovMap param) {
+	public boolean modifyAccount(EgovMap param) {
+		System.out.println("[AccountServiceImpl] modifyAccount() 호출됨");
+		System.out.println("수정할 파라미터: " + param);
 		
-		return 0;
+		int updatedRows = accountDAO.updateAccount(param);
+		boolean success = updatedRows > 0;
+		
+		if(success) {
+			System.out.println("수정 성공 ( " + updatedRows + "건 반영됨)" );
+		} else {
+			System.out.println("수정 실패 (DB 반영 0건)");
+		}
+		
+		return success;
+		
 	}
-
 }

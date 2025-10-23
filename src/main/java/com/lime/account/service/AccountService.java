@@ -14,6 +14,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *     2025.10.21       노유경                       회계 정보 등록 기능 정의
  *     2025.10.22    	노유경    			단건 조회/수정 기능 정의, insert 반환값을 PK로 변경
  *     2025.10.22    	노유경     			단건 조회(getAccountDetail), 수정(modifyAccount), 등록(registerAccount) 메서드명 변경
+ *     2025.10.23              노유경        		modifyAccount() 반환타입을 int → boolean 으로 변경하여 성공 여부 반환하도록 수정
  * 
  */
 
@@ -26,6 +27,6 @@ public interface AccountService {
 	public EgovMap getAccountDetail(Long accountSeq);
 	
 	// 회계 정보 수정
-	public int modifyAccount(EgovMap param);
+	public boolean modifyAccount(EgovMap param);
 	
 }

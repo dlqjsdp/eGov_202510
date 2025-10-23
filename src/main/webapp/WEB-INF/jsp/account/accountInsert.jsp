@@ -8,15 +8,15 @@
 
 <script>
 $(document).ready(function(){
-
+	
 	// 1. 하위 select 채우기
 	function loadChildren(parentCode, $target, firstAsNone) {
 		
 		// 기본 옵션 구성
-		const baseOption = firstAsNone
+		var baseOption = firstAsNone
 		  ? '<option value="0">해당없음</option>'
 		  : '<option value="">선택</option>';
-		
+
 		// 상위 코드가 없을 경우 기본 옵션만 표시하고 종료
 		if (!parentCode) {
 		  $target.html(baseOption);
@@ -33,14 +33,14 @@ $(document).ready(function(){
 				console.log('selectCombo res =', res);
 				
 				// 1) 응답 리스트 추출 (배열이 아닐 경우 빈 배열)
-				const list = (res && Array.isArray(res.list)) ? res.list : [];
+				var list = (res && Array.isArray(res.list)) ? res.list : [];
 				
 			    // 2) for문으로 <option> 생성: 기본옵션 + 데이터 옵션
-			    let html = baseOption;
+			    var html = baseOption;
 				for (let i = 0; i < list.length; i++) {
-					const row = list[i];
-					const code = row.code || row.CODE; // 대/소문자 동시 대응
-			        const name = row.comKor || row.COM_KOR; // 대/소문자 동시 대응
+					var row = list[i];
+					var code = row.code || row.CODE; // 대/소문자 동시 대응
+					var name = row.comKor || row.COM_KOR; // 대/소문자 동시 대응
 
 			        html += '<option value="' + code + '">' + name + '</option>';
 				}
@@ -60,7 +60,7 @@ $(document).ready(function(){
 	
 	// 2. 체인 이벤트: 상위 선택 시 하위 초기화 및 로드
 	$('#profitCost').on('change', function(){
-		const code = $(this).val();
+		var code = $(this).val();
 		console.log('[profitCost change] code=', code);
 		loadChildren(code, $('#bigGroup'), false);
 		$('#middleGroup').html('<option value="0">해당없음</option>');
@@ -69,20 +69,20 @@ $(document).ready(function(){
 	});
 	
 	$('#bigGroup').on('change', function(){
-		const code = $(this).val();
+		var code = $(this).val();
 		loadChildren(code, $('#middleGroup'), true);
 		$('#smallGroup').html('<option value="0">해당없음</option>');
 		$('#detailGroup').html('<option value="0">해당없음</option>');
 	});
 	
 	$('#middleGroup').on('change', function(){
-		const code = $(this).val();
+		var code = $(this).val();
 		loadChildren(code, $('#smallGroup'), true);
 		$('#detailGroup').html('<option value="0">해당없음</option>');
 	});
 	
 	$('#smallGroup').on('change', function(){
-		const code = $(this).val();
+		var code = $(this).val();
 		loadChildren(code, $('#detailGroup'), true);
 	});
 	
@@ -90,7 +90,7 @@ $(document).ready(function(){
 	$('#saveBtn').on('click', function(e) {
 		e.preventDefault(); // 기본 폼 submit 방지(페이지 리로드 방지)
 		
-		const payload = {
+		var payload = {
 				profitCost: $('#profitCost').val(),
 				bigGroup: $('#bigGroup').val(),
 				middleGroup: $('#middleGroup').val(),

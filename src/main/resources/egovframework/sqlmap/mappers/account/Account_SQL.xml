@@ -11,6 +11,7 @@
     2025.10.20    노유경        ACCOUNT_TB 데이터 등록(INSERT) 쿼리 추가
     2025.10.21    노유경        등록 시 생성된 계정번호(accountSeq)가 자동으로 저장되도록 수정
     2025.10.22    노유경        단건 조회(selectAccountDetail) 및 데이터 수정(updateAccount) 쿼리 추가
+    2025.10.23    노유경        selectAccountDetail의 파라미터 바인딩을 #{accountSeq} → #{value}로 수정
        
 @since 2025.10.20
 @version 1.2
@@ -67,7 +68,7 @@
 		FROM 
 			ACCOUNT_TB 
 		WHERE 
-			ACCOUNT_SEQ = #{accountSeq}
+			ACCOUNT_SEQ = #{value}
 	</select>
 	
 	
