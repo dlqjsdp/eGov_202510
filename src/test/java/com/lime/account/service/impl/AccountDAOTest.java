@@ -59,5 +59,34 @@ public class AccountDAOTest {
 		// then
 		assertTrue(true);
 	}
+	
+
+	/*
+	 * DB에서 단건 조회하기
+	 * (DB에 있는 내용 가지고 조회)
+	 */
+	@Test
+	public void selectAccountDetailTest(){
+		// given
+		long accountSeq = 17L; // DB에 이미 존재하는 pk
+		
+		// when
+		EgovMap row = accountDAO.selectAccountDetail(accountSeq);
+		
+		// then
+		assertNotNull("조회 결과가 있어야 함", row);
+		System.out.println("조회 결과: "+ row);
+		
+		// 값 검증
+		assertEquals("AB00000", row.get("profitCost"));
+		assertEquals("ABA0000", row.get("bigGroup"));
+		assertEquals("ABAC000", row.get("middleGroup"));
+		assertEquals("ABACB00", row.get("smallGroup"));
+		assertEquals("ABACB01", row.get("detailGroup"));
+		assertEquals("코멘트2", row.get("comments"));
+		assertEquals(1798798, ((Number) row.get("transactionMoney")).intValue());
+		assertEquals(Date.valueOf("2025-10-15"), row.get("transactionDate"));
+		assertEquals("admin4", row.get("writer"));
+	}
 
 }

@@ -10,23 +10,82 @@
          수정일                  수정자         수정내용
     2025.10.20    노유경        ACCOUNT_TB 데이터 등록(INSERT) 쿼리 추가
     2025.10.21    노유경        등록 시 생성된 계정번호(accountSeq)가 자동으로 저장되도록 수정
+    2025.10.22    노유경        단건 조회(selectAccountDetail) 및 데이터 수정(updateAccount) 쿼리 추가
        
 @since 2025.10.20
-@version 1.0
+@version 1.2
 -->
 
 <mapper namespace="Account">
 	
 	<!-- 데이터 등록하기 -->
 	<insert id="insertAccount" parameterType="egovMap" useGeneratedKeys="true" keyProperty="accountSeq">
-		insert into ACCOUNT_TB (
-			PROFIT_COST, BIG_GROUP, MIDDLE_GROUP, SMALL_GROUP, DETAIL_GROUP,
-			COMMENTS, TRANSACTION_MONEY, TRANSACTION_DATE, WRITER, REG_DATE
-			)
-			values (
-			#{profitCost}, #{bigGroup}, #{middleGroup}, #{smallGroup}, #{detailGroup},
-    		#{comments}, #{transactionMoney}, #{transactionDate}, #{writer}, NOW()
-			)			
+		insert 
+			into 
+				ACCOUNT_TB 
+				(
+				PROFIT_COST, 
+				BIG_GROUP, 
+				MIDDLE_GROUP, 
+				SMALL_GROUP, 
+				DETAIL_GROUP,
+				COMMENTS, 
+				TRANSACTION_MONEY, 
+				TRANSACTION_DATE, 
+				WRITER, 
+				REG_DATE
+				)
+		values 
+				(
+				#{profitCost}, 
+				#{bigGroup}, 
+				#{middleGroup}, 
+				#{smallGroup}, 
+				#{detailGroup},
+    			#{comments}, 
+    			#{transactionMoney}, 
+    			#{transactionDate}, 
+    			#{writer}, 
+    			NOW()
+				)			
 	</insert>
+	
+	
+	<!-- 데이터 단건조회 -->
+	<select id="selectAccountDetail" parameterType="long" resultType="egovMap">
+		SELECT 
+			ACCOUNT_SEQ, 
+		   	PROFIT_COST,
+		   	BIG_GROUP,
+		   	MIDDLE_GROUP,
+		   	SMALL_GROUP, 
+		   	DETAIL_GROUP,
+		   	COMMENTS,
+		   	TRANSACTION_MONEY,
+		   	TRANSACTION_DATE,
+		   	WRITER 
+		FROM 
+			ACCOUNT_TB 
+		WHERE 
+			ACCOUNT_SEQ = #{accountSeq}
+	</select>
+	
+	
+	<!-- 데이터 수정하기 -->
+	  <update id="updateAccount" parameterType="egovMap">
+	    UPDATE 
+	    	ACCOUNT_TB 
+    	SET 
+    		PROFIT_COST = #{profitCost},
+	    	BIG_GROUP = #{bigGroup},
+	    	MIDDLE_GROUP = #{middleGroup}, 
+	    	SMALL_GROUP = #{smallGroup},
+	    	DETAIL_GROUP = #{detailGroup},
+	    	COMMENTS = #{comments},
+	    	TRANSACTION_MONEY = #{transactionMoney},
+	    	TRANSACTION_DATE = #{transactionDate}
+	    WHERE 
+	    	ACCOUNT_SEQ = #{accountSeq}
+	  </update>
 	
 </mapper>

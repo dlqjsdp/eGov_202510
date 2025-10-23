@@ -16,6 +16,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *     수정일                       수정자                  수정내용
  *     ----------    --------    --------------------------------------------
  *     2025.10.20    노유경                   ACCOUNT_TB 데이터 등록(insertAccount) 기능 추가
+ *     2025.10.22        노유경        	      회계 정보 단건 조회(selectAccountDetail), 수정(updateAccount) 기능 추가
  * 
  * @since 2025.10.20
  * @version 1.1
@@ -31,5 +32,19 @@ public class AccountDAO extends EgovAbstractMapper{
 		System.out.println("전달된 파라미터: " + param);
 		insert("Account.insertAccount", param);
 	}
-
+	
+	// 회계 정보 단건 조회
+	public EgovMap selectAccountDetail(Long accountSeq) {
+        System.out.println("[AccountDAO] selectAccountDetail() 호출됨");
+        System.out.println("조회할 accountSeq: " + accountSeq);
+        return selectOne("Account.selectAccountDetail", accountSeq);
+    }
+	
+	// 회계 정보 수정
+	public void updateAccount(EgovMap param) {
+        System.out.println("[AccountDAO] updateAccount() 호출됨");
+        System.out.println("수정할 파라미터: " + param);
+        update("Account.updateAccount", param);
+    }
+	
 }

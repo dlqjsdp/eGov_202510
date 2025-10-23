@@ -95,12 +95,12 @@ public class LoginController {
 		
 		// 4. 성공 시 세션 저장 (비밀번호는 제외)
 		loginUser.setPwd(null); // 비밀번호는 저장 안함
-		session.setAttribute("LoginUser", loginUser);
+		session.setAttribute("LOGIN_USER", loginUser);
 		System.out.println("[LoginController] 로그인 성공 - 세션 저장 완료");
 		// 세션 정보 확인
 		System.out.println("=== 세션 확인 ===");
 		System.out.println("세션 ID : " + session.getId());
-		System.out.println("세션 저장된 사용자 : " + ((UserVO)session.getAttribute("LoginUser")).getUserId());
+		System.out.println("세션 저장된 사용자 : " + ((UserVO)session.getAttribute("LOGIN_USER")).getUserId());
 		System.out.println("=================");
 		
 		// 5. 성공 응답

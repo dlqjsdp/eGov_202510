@@ -38,6 +38,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *     2025.10.21       노유경                       AJAX 응답 구조 개선 (ModelAndView → Map 반환), 금액 검증 및 세션 기반 작성자 정보 추가
  *     2025.10.21       노유경                       하위 코드 조회(selectCombo) JSON 반환 구조 수정 (list 키 추가)
  *     2025.10.21       노유경                       insertAccount() 서비스 호출 후 accountSeq 반환 로직 추가
+ *     2025.10.22    	노유경       		서비스 메서드 네이밍 변경(registerAccount 적용), 세션 키명 통일("LOGIN_USER") 
  * 
  */
 
@@ -142,32 +143,46 @@ public class AccountController {
 				res.put("message", "수익/비용 구분은 필수입니다.");
 				return res;
 			}
-	        
+			
+			// 다른 값들도 검증 추가하기
+			if(CommUtils.isEmpty((String) body.get("bigGroup"))) {
+				res.put("success", false);
+				res.put("message", "관 구분은 필수입니다.");
+				return res;
+			}
+			
+			if(CommUtils.isEmpty((String) body.get("middleGroup"))) {
+				res.put("success", false);
+				res.put("message", "항 구분은 필수입니다.");
+				return res;
+			}
+			
+			if(CommUtils.isEmpty((String) body.get("smallGroup"))) {
+				res.put("success", false);
+				res.put("message", "과 구분은 필수입니다.");
+				return res;
+			}
+			
 	        // 2. 세션에 작성자 정보 추가
-	        UserVO loginUser = (UserVO) request.getSession().getAttribute("LoginUser");
+	        UserVO loginUser = (UserVO) request.getSession().getAttribute("LOGIN_USER");
 	        if (loginUser == null) {
 	            res.put("success", false);
 	            res.put("message", "로그인이 필요합니다.");
 	            return res;
 	        }
-	        body.put("writer", loginUser.getUserId());
 	        
-			// DB 저장 처리
+			// 3. 파라미터 구성
 			EgovMap param = new EgovMap();
 	        param.putAll(body); // DAO/SQL에서 사용하는 키 그대로 매핑
-			accountService.insertAccount(param);
+	        param.put("writer", loginUser.getUserId()); // 작성자 세션에서 주입
 			
-			System.out.println("생성된 accountSeq = " + param.get("accountSeq"));
 			
-			// 생성된 PK (새로 만들어진 게시글 번호를 응답으로 보내주려는 목적)
-			Object accountSeq = param.get("accountSeq");
-			if (accountSeq != null) {
-			    res.put("accountSeq", accountSeq);
-			}
-			
-			// 성공 시 응답
-			res.put("success", true);
-			res.put("message", "등록이 완료되었습니다.");
+			// 4. 등록 처리 → 생성된 PK 반환
+            long accountSeq = accountService.registerAccount(param);
+
+            res.put("success", true);
+            res.put("message", "등록이 완료되었습니다.");
+            res.put("accountSeq", accountSeq); // 프론트에서 곧바로 수정화면으로 이동 가능
 			
 		} catch (Exception e) {
 			// 예외 발생 시 응답
@@ -177,7 +192,5 @@ public class AccountController {
 	
 		return res;
 	}
-
-
 
 }// end of calss

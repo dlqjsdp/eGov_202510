@@ -7,7 +7,7 @@
 @Description : 로그인 화면 (AJAX 기반 로그인 처리)
 
 @Modification Information
-     수정일                      수정자          수정내용
+     수정일                  수정자          수정내용
   2025.10.17    노유경          AJAX 기반 로그인 처리 및 유효성 검사 추가
   2025.10.17    노유경          로그인 실패 및 서버 오류 처리 로직 추가
   2025.10.17    노유경          window.location.href를 통한 성공 시 페이지 이동 적용
