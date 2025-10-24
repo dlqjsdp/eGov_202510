@@ -73,20 +73,29 @@
 	
 	
 	<!-- 데이터 수정하기 -->
-	  <update id="updateAccount" parameterType="egovMap">
-	    UPDATE 
-	    	ACCOUNT_TB 
-    	SET 
-    		PROFIT_COST = #{profitCost},
-	    	BIG_GROUP = #{bigGroup},
-	    	MIDDLE_GROUP = #{middleGroup}, 
-	    	SMALL_GROUP = #{smallGroup},
-	    	DETAIL_GROUP = #{detailGroup},
-	    	COMMENTS = #{comments},
-	    	TRANSACTION_MONEY = #{transactionMoney},
-	    	TRANSACTION_DATE = #{transactionDate}
-	    WHERE 
-	    	ACCOUNT_SEQ = #{accountSeq}
-	  </update>
+	<update id="updateAccount" parameterType="egovMap">
+	  	UPDATE 
+	  		ACCOUNT_TB 
+	 	SET 
+	 		PROFIT_COST = #{profitCost},
+		  	BIG_GROUP = #{bigGroup},
+		  	MIDDLE_GROUP = #{middleGroup}, 
+		  	SMALL_GROUP = #{smallGroup},
+		  	DETAIL_GROUP = #{detailGroup},
+		  	COMMENTS = #{comments},
+		  	TRANSACTION_MONEY = #{transactionMoney},
+		  	TRANSACTION_DATE = #{transactionDate}
+	  	WHERE 
+	  		ACCOUNT_SEQ = #{accountSeq}
+	</update>
+	
+	
+	<!-- 회계정보 목록 조회 -->
+	<select id="selectAccountList" parameterType="egovMap" resultType="egovMap">
+
+	
+	</select>
+	
+	<!-- 회계정보 총 건수 (페이징용) -->
 	
 </mapper>

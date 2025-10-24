@@ -32,6 +32,7 @@ import com.lime.util.CommUtils;
  *   2025.10.17    노유경                    로그인 페이지 매핑 및 로그인 처리 기능 구현
  *   2025.10.17    노유경                    @RequestBody 기반 JSON 요청 처리 및 세션 저장 로직 추가
  *   2025.10.17    노유경                    로그인 실패 시 메시지 반환 및 성공 시 /account/accountList.do 이동 설정
+ *   2025.10.24    노유경                    로그아웃 기능 추가 (/login/logout.do 매핑, 세션 무효화 및 로그인 페이지 리다이렉트)
  *   
  */
 
@@ -108,6 +109,14 @@ public class LoginController {
 		result.put("redirect", "/account/accountList.do");
 		System.out.println("[LoginController] JSON 응답 반환 완료");
 		return result;
+	}
+	
+	
+	// 로그아웃 처리
+	@RequestMapping("/login/logout.do")
+	public String logout(HttpSession session) {
+		session.invalidate(); // 세셩 정보 모두 삭제
+		return "redirect:/login/login.do"; // 로그인 화면으로 이동
 	}
 
 

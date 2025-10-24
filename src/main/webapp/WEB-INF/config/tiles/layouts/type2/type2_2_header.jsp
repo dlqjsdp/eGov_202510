@@ -26,7 +26,13 @@
 	      </ul>
 
 	      <ul class="nav navbar-nav ">
-	        <li class="dropdown active"><span><font size="2px" color="white" >  	<br /> 님 로그인 </font></span></li>
+	        <li class="dropdown active">
+	        	<span>
+	        		<font size="2px" color="white" >
+	        			<br /> ${sessionScope.LOGIN_USER.userName} 님 로그인
+	        		</font>
+	        	</span>
+	        </li>
 	        <li class="active"><a href="/login/logout.do"><span class="glyphicon glyphicon-log-in"></span> LogOut</a></li>
 	      </ul>
 
