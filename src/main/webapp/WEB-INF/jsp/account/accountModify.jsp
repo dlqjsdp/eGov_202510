@@ -9,19 +9,23 @@
 <script>
 $(document).ready(function(){
 	
+	function nvlCode(v){
+		return (v === undefined || v === null || v === '' || v === '0' || v === 0) ? null : v;
+		}
+	
 	
 	 // 0) 서버에서 바인딩된 단건 데이터 (대문자 키 주의)
 	 function nv(v){ return (v === 'null' || v == null) ? '' : v; }
 	 var detail = {
-			 ACCOUNT_SEQ: nv('<c:out value="${account.get('accountSeq')}" default=""/>'),
-			 PROFIT_COST: nv('<c:out value="${account.get('profitCost')}" default=""/>'),
-			 BIG_GROUP: nv('<c:out value="${account.get('bigGroup')}" default=""/>'),
-			 MIDDLE_GROUP: nv('<c:out value="${account.get('middleGroup')}" default=""/>'),
-			 SMALL_GROUP: nv('<c:out value="${account.get('smallGroup')}" default=""/>'),
-			 DETAIL_GROUP: nv('<c:out value="${account.get('detailGroup')}" default=""/>'),
-			 COMMENTS: nv('<c:out value="${account.get('comments')}" default=""/>'),
-			 TRANSACTION_MONEY: nv('<c:out value="${account.get('transactionMoney')}" default=""/>'),
-			 TRANSACTION_DATE: nv('<c:out value="${account.get('transactionDate')}" default=""/>')
+			 ACCOUNT_SEQ: nv('<c:out value="${account.get("accountSeq")}" default=""/>'),
+			 PROFIT_COST: nv('<c:out value="${account.get("profitCost")}" default=""/>'),
+			 BIG_GROUP: nv('<c:out value="${account.get("bigGroup")}" default=""/>'),
+			 MIDDLE_GROUP: nv('<c:out value="${account.get("middleGroup")}" default=""/>'),
+			 SMALL_GROUP: nv('<c:out value="${account.get("smallGroup")}" default=""/>'),
+			 DETAIL_GROUP: nv('<c:out value="${account.get("detailGroup")}" default=""/>'),
+			 COMMENTS: nv('<c:out value="${account.get("comments")}" default=""/>'),
+			 TRANSACTION_MONEY: nv('<c:out value="${account.get("transactionMoney")}" default=""/>'),
+			 TRANSACTION_DATE: nv('<c:out value="${account.get("transactionDate")}" default=""/>')
 	 };
 	 console.log('detail =', detail);
 
@@ -145,11 +149,11 @@ $(document).ready(function(){
 		// payload에 넣어서 전송
 		var payload = {
 			accountSeq: accountSeq,
-			profitCost: $('#profitCost').val(),
-			bigGroup: $('#bigGroup').val(),
-			middleGroup: $('#middleGroup').val(),
-			smallGroup: $('#smallGroup').val(),
-			detailGroup: $('#detailGroup').val(),
+			profitCost: nvlCode($('#profitCost').val()),
+			bigGroup: nvlCode($('#bigGroup').val()),
+			middleGroup: nvlCode($('#middleGroup').val()),
+			smallGroup: nvlCode($('#smallGroup').val()),
+			detailGroup: nvlCode($('#detailGroup').val()),
 			comments: $('#comments').val(),
 			transactionMoney: $('#transactionMoney').val(),
 			transactionDate: $('#transactionDate').val(),

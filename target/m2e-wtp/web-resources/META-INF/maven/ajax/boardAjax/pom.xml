@@ -242,6 +242,14 @@
 			<artifactId>tiles-jsp</artifactId>
 			<version>3.0.5</version>
 		</dependency>
+		
+		<!-- 엑셀 다운로드용 Apache POI (안정버전, log4j 충돌 없음) -->
+		<dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-ooxml</artifactId>
+		  <version>3.17</version>
+		</dependency>
+		
 	</dependencies>
 
 	<!-- 빌드 설정 -->

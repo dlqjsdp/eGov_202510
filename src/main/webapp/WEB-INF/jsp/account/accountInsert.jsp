@@ -9,6 +9,10 @@
 <script>
 $(document).ready(function(){
 	
+	function nvlCode(v){
+		return (v === undefined || v === null || v === '' || v === '0' || v === 0) ? null : v;
+		}
+	
 	// 1. 하위 select 채우기
 	function loadChildren(parentCode, $target, firstAsNone) {
 		
@@ -86,16 +90,18 @@ $(document).ready(function(){
 		loadChildren(code, $('#detailGroup'), true);
 	});
 	
+	
+	
 	// 3. 등록(저장): 폼 값 수집 -> JSON POST -> 성공 시 이동
 	$('#saveBtn').on('click', function(e) {
 		e.preventDefault(); // 기본 폼 submit 방지(페이지 리로드 방지)
 		
 		var payload = {
 				profitCost: $('#profitCost').val(),
-				bigGroup: $('#bigGroup').val(),
-				middleGroup: $('#middleGroup').val(),
-				smallGroup: $('#smallGroup').val(),
-				detailGroup: $('#detailGroup').val(),
+				bigGroup: nvlCode($('#bigGroup').val()),
+				middleGroup: nvlCode($('#middleGroup').val()),
+				smallGroup: nvlCode($('#smallGroup').val()),
+				detailGroup: nvlCode($('#detailGroup').val()),
 				comments: $('#comments').val(),
 				transactionMoney: $('#transactionMoney').val(),
 				transactionDate: $('#transactionDate').val(),

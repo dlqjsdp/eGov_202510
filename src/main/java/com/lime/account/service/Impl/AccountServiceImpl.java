@@ -22,6 +22,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *     2025.10.22    	노유경       		자동 생성된 accountSeq 추출 로직 추가 및 형변환 처리(Number → long)
  *     2025.10.22    	노유경       		단건 조회(getAccountDetail), 수정(modifyAccount) 메서드 구조 추가
  *     2025.10.23		노유경 			modifyAccount() 반환타입을 boolean으로 변경 및 로직 완성 (성공/실패 여부 반환)
+ *     2025.10.26       노유경                       목록 조회(getAccountList), 총건수(getAccountListCount) 구현 및 기본 페이징 파라미터 보정
  * 
  */
 
@@ -80,4 +81,28 @@ public class AccountServiceImpl implements AccountService {
 		return success;
 		
 	}
+
+
+    // 회계 정보 목록 조회 (뷰 기반, 페이징)
+    @Override
+    public List<EgovMap> getAccountList(EgovMap param) {
+        System.out.println("[AccountServiceImpl] getAccountList() 호출됨");
+        // 기본 페이징 보정 (null 방지)
+        if (param.get("firstIndex") == null) {
+            param.put("firstIndex", 0);
+        }
+        if (param.get("recordCountPerPage") == null) {
+            param.put("recordCountPerPage", 10);
+        }
+        System.out.println("목록 조회 파라미터: firstIndex=" + param.get("firstIndex")
+                + ", recordCountPerPage=" + param.get("recordCountPerPage"));
+        return accountDAO.selectAccountList(param);
+    }
+
+    // 회계 정보 총 건수 (페이징용)
+    @Override
+    public int getAccountListCount(EgovMap param) {
+        System.out.println("[AccountServiceImpl] getAccountListCount() 호출됨");
+        return accountDAO.selectAccountListCount(param);
+    }
 }

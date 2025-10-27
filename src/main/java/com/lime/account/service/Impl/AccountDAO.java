@@ -18,6 +18,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *     2025.10.20    노유경                   ACCOUNT_TB 데이터 등록(insertAccount) 기능 추가
  *     2025.10.22        노유경        	      회계 정보 단건 조회(selectAccountDetail), 수정(updateAccount) 기능 추가
  *     2025.10.23        노유경        	   updateAccount() 반환타입을 void → int 로 변경하여 영향 행 수 반환하도록 수정
+ *     2025.10.26        노유경        	      회계정보 목록 조회(selectAccountList) 및 총건수(selectAccountListCount) 추가
  * 
  * @since 2025.10.20
  * @version 1.1
@@ -46,6 +47,19 @@ public class AccountDAO extends EgovAbstractMapper{
         System.out.println("[AccountDAO] updateAccount() 호출됨");
         System.out.println("수정할 파라미터: " + param);
         return update("Account.updateAccount", param); // 영향을 받은 행의 수 반환
+    }
+	
+	// 회계정보 목록 조회 (뷰 기반, 페이징)
+    public List<EgovMap> selectAccountList(EgovMap param) {
+        System.out.println("[AccountDAO] selectAccountList() 호출됨");
+        System.out.println("목록 조회 파라미터: " + param); // firstIndex, recordCountPerPage 등
+        return selectList("Account.selectAccountList", param);
+    }
+
+    // 회계정보 총 건수 (페이징용)
+    public int selectAccountListCount(EgovMap param) {
+        System.out.println("[AccountDAO] selectAccountListCount() 호출됨");
+        return selectOne("Account.selectAccountListCount", param);
     }
 	
 }
