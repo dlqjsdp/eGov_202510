@@ -42,9 +42,6 @@ public class LoginController {
 
 	@Resource(name = "jsonView")
 	private MappingJackson2JsonView jsonView;
-
-	@Resource(name="commonService")
-	private CommonService commonService;
 	
 	@Resource(name="loginService")
 	private LoginService loginService;
@@ -52,19 +49,10 @@ public class LoginController {
 
 	// 로그인 페이지 이동
 	@RequestMapping(value="/login/login.do")
-	public String loginview(HttpServletRequest request ) {
-
+	public String loginview(HttpServletRequest request) {
 		return "/login/login";
 	}
 
-	// 아이디 중복확인 (?)
-	@RequestMapping(value="/login/idCkedAjax.do")
-	public ModelAndView idCkedAjax(HttpServletRequest request ) throws Exception {
-		Map<String, Object> inOutMap  = CommUtils.getFormParam(request);
-
-		return new ModelAndView(jsonView, inOutMap);
-	}
-	
 	// 로그인 처리
 	@ResponseBody
 	@RequestMapping(value="/login/loginProc.do", method=RequestMethod.POST)

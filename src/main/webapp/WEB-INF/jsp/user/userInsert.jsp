@@ -19,11 +19,11 @@
 -->
 
 <script type="text/javascript">
-	$(document).ready(function() {
+	$(function () {
 
 		// 1. 유효성 검사 관련 함수
 		// 비밀번호 정책: 6~12자 & 영문/숫자/특수문자 포함
-		const reg = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{6,12}$/;
+		let reg = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{6,12}$/;
 
 		function validatePassword(pwd) {
 			console.log("비밀번호 입력 길이:", pwd.length);
@@ -37,35 +37,35 @@
 		// 2. 이벤트 등록
 		// 2-1) ID 중복 체크
 		$("#idcked").on("click", function() {
-			const userId = $("#userId").val().trim();
-			console.log("중복체크 클릭 - userId:", userId);
+			let memId = $("#memId").val().trim();
+			console.log("중복체크 클릭 - memId:", memId);
 			
-			if (!userId || userId.length < 6) {
+			if (!memId || memId.length < 6) {
 			      alert("ID는 6자 이상 입력하세요.");
 			      return;
 			    }
 
-			$.get("<c:url value='/user/checkId.do'/>", {
-				userId : userId
-			}).done(function(res) {
+			$.get("<c:url value='/user/checkId.do'/>", {userId : memId})
+			.done(function(res) {
 				console.log("중복체크 결과", res);
 				alert(res.message);
-			}).fail(function() {
+			})
+			.fail(function() {
 				alert("중복 체크 중 오류가 발생했습니다.");
 			});
 		});
 
 		// 2-2) 저장(회원가입)
 		$("#saveBtn").on("click", function() {
-			const userId = $("#userId").val().trim();
-			const pwd = $("#pwd").val();
-			const pwdck = $("#pwdck").val();
-			const userName = $("#userName").val().trim();
+			let memId = $("#memId").val().trim();
+			let pwd = $("#pwd").val();
+			let pwdck = $("#pwdck").val();
+			let memName = $("#memName").val().trim();
 			
-			console.log("회원가입 클릭", { userId:userId, userName:userName });
+			console.log("회원가입 클릭", { userId:memId, userName:memName });
 
 			// 기본 검증
-			if (!userId || userId.length < 6) {
+			if (!memId || memId.length < 6) {
 				alert("ID는 6자 이상 입력하세요.");
 				return;
 			}
@@ -76,7 +76,7 @@
 				alert("비밀번호가 일치하지 않습니다.");
 				return;
 			}
-			if (!userName) {
+			if (!memName) {
 				alert("이름을 입력하세요.");
 				return;
 			}
@@ -87,9 +87,9 @@
 				method : "POST",
 				contentType : "application/json; charset=UTF-8",
 				data : JSON.stringify({
-					userId : userId,
+					userId : memId,
 					pwd : pwd,
-					userName : userName
+					userName : memName
 				})
 			}).done(function(res) {
 				console.log("회원가입 성공", res);
@@ -116,7 +116,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">ID</label>
 			<div class="col-sm-4">
-				<input class="form-control" id="userId" name="userId" type="text"
+				<input class="form-control" id="memId" name="memId" type="text"
 					value="" title="ID">
 			</div>
 
@@ -144,7 +144,7 @@
 		<div class="form-group">
 			<label for="disabledInput" class="col-sm-2 control-label">이름</label>
 			<div class="col-sm-4">
-				<input class="form-control" id="userName" name="userName"
+				<input class="form-control" id="memName" name="memName"
 					type="text" value="" title="이름">
 			</div>
 		</div>

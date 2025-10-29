@@ -32,14 +32,14 @@ public class UserController {
     private UserService userService;
 
     // 회원가입 폼 페이지 진입
-    @RequestMapping(value="/userInsert.do", method=RequestMethod.GET)
+    @RequestMapping(value="/userInsert.do")
     public String userInsertForm() {
         return "/user/userInsert"; 
     }
 
     // ID 중복체크 (AJAX)
     @ResponseBody
-    @RequestMapping(value="/checkId.do", method=RequestMethod.GET)
+    @RequestMapping(value="/checkId.do")
     public Map<String, Object> checkId(@RequestParam("userId") String userId) {
         boolean available = userService.isAvailableUserId(userId);
 

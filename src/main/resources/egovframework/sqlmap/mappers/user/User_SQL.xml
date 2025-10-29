@@ -23,7 +23,7 @@
 		<result property="userId" column="USER_ID" />
 		<result property="pwd" column="PWD" />
 		<result property="userName" column="USER_NAME" />
-		<result property="regDt" column="REG_DT" jdbcType="DATE"/>
+		<result property="regDt" column="REG_DT"/>
 	</resultMap>
 
 	<!-- ID 중복 검사 -->
@@ -37,8 +37,7 @@
 	</select>
 
 	<!-- 회원 등록 -->
-	<insert id="insertUser" parameterType="com.lime.user.vo.UserVO"
-		useGeneratedKeys="true" keyProperty="userSeq">
+	<insert id="insertUser" parameterType="com.lime.user.vo.UserVO" useGeneratedKeys="true" keyProperty="userSeq">
 		insert 
 			into 
 				USER_TB

@@ -115,8 +115,10 @@
 	
 	<!-- 회계정보 총 건수 (페이징용) -->
 	<select id="selectAccountListCount" parameterType="egovMap" resultType="int">
-	  SELECT COUNT(*)
-	  FROM vw_account_tb
+	  SELECT 
+	  	COUNT(*)
+	  FROM 
+	  	vw_account_tb
 	</select>
 	
 </mapper>

@@ -19,13 +19,11 @@
 <script type="text/javascript">
 	// DOM 준비 후 실행
 	$(function () {
-	  // 동적 변경에도 안전한 위임 바인딩
-	  $(document).on('click', '#loginBtn', function (e) {
-	    e.preventDefault(); // <button>의 기본 form 제출 동작을 막고, AJAX로만 전송
+	  $(document).on('click', '#loginBtn', function () {
 	
 	    // 입력값 가져오기
-	    const memId = $.trim($('#memId').val());
-	    const memPassword = $('#memPassword').val();
+	    let memId = $.trim($('#memId').val());
+	    let memPassword = $('#memPassword').val();
 	
 	    // 유효성 검사
 	    if (!memId || !memPassword) {
@@ -51,10 +49,9 @@
 		        alert(res.message || '아이디 또는 비밀번호가 올바르지 않습니다.');
 		      }
 		    })
-	    .fail(function (xhr, status, err) {
-	      console.error('로그인 오류:', status, err, xhr.responseText);
-	      alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-	    });
+		    .fail(function() {
+		    	alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
+		    });
 	  });
 	});
 
@@ -77,8 +74,8 @@
 		<br>
 		<div class="col-md-offset-4">
 			<button type="button" id="loginBtn" class="btn btn-primary">로그인</button>
-			<button type="button" id="#" class="btn btn-warning" onclick="location.href='/login/login.do'">취소</button>
-			<button type="button" id="#" class="btn btn-info" onclick="location.href='/user/userInsert.do'">회원가입</button>
+			<button type="button" class="btn btn-warning" onclick="location.href='/login/login.do'">취소</button>
+			<button type="button" class="btn btn-info" onclick="location.href='/user/userInsert.do'">회원가입</button>
 		</div>
 	</div>
 </form>
