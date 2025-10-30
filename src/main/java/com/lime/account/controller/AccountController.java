@@ -1,6 +1,5 @@
 package com.lime.account.controller;
 
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +9,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -333,35 +329,39 @@ public class AccountController {
 
 	    // 1. eGov 페이징 계산
 	    PaginationInfo paginationInfo = new PaginationInfo();
-	    paginationInfo.setCurrentPageNo(pageIndex);
-	    paginationInfo.setRecordCountPerPage(recordCountPerPage);
-	    paginationInfo.setPageSize(pageSize);
+	    paginationInfo.setCurrentPageNo(pageIndex); // 현재 페이지 번호
+	    paginationInfo.setRecordCountPerPage(recordCountPerPage); // 페이지당 개수
+	    paginationInfo.setPageSize(pageSize); // 페이지 번호 버튼의 개수 (1~10, 11~20)
 
 	    // 2. 목록 조회 파라미터(목록 AJAX와 동일하게 구성)
 	    EgovMap param = new EgovMap();
-	    param.put("firstIndex", paginationInfo.getFirstRecordIndex()); // OFFSET
-	    param.put("recordCountPerPage", paginationInfo.getRecordCountPerPage()); // LIMIT
+	    param.put("firstIndex", paginationInfo.getFirstRecordIndex()); // 현재 페이지 번호와 페이지당 개수를 기준으로 조회 시작 위치(OFFSET 계산
+	    param.put("recordCountPerPage", paginationInfo.getRecordCountPerPage()); // 한 페이지에 보여줄 데이터 개수(LIMIT)
 
 	    // 3. 현재 페이지 데이터 조회(기존 서비스 재사용)
 	    List<EgovMap> resultList = accountService.getAccountList(param);
 
 	    // 4. 엑셀 생성(XLSX)
-	    XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet("회계정보리스트");
-		XSSFRow headerRow = sheet.createRow(0); 
+	    XSSFWorkbook workbook = new XSSFWorkbook(); // 새 XLSX 워크북(엑셀 파일 본체) 생성
+		XSSFSheet sheet = workbook.createSheet("회계정보리스트"); // 워크북 안에 새 시트를 하나 추가하고, 시트 이름을 "회계정보리스트"로 지정
+		XSSFRow headerRow = sheet.createRow(0); // 0번째 인덱스 행을 만들고, 이 행을 헤더 행으로 사용
 		
 	    // 헤더
-	    String[] headers = {"수익/비용","관","항","목","과","금액","등록일","작성자"};
+	    String[] headers = {"수익/비용","관","항","목","과","금액","등록일","작성자"}; // 헤더로 쓸 문자열 배열
 	    for (int i = 0; i < headers.length; i++) {
-			headerRow.createCell(i).setCellValue(headers[i]);
+			headerRow.createCell(i).setCellValue(headers[i]); // 전부 String
 		}
 
 	    // 본문(현재 페이지 데이터만)
 	    for (int i = 0; i < resultList.size(); i++) {
 			EgovMap row = resultList.get(i);
+			
+			// 1. 한 행 만들기 (엑셀의 2번째 줄부터)
 			XSSFRow excelRow = sheet.createRow(i + 1);
-			excelRow.createCell(0).setCellValue(row.get("profitCostNm") != null ? row.get("profitCostNm").toString() : "");
-			excelRow.createCell(1).setCellValue(row.get("bigGroupNm") != null ? row.get("bigGroupNm").toString() : "");
+			
+			// 2. 그 행 안에 A~H열 셀 채우기
+			excelRow.createCell(0).setCellValue(row.get("profitCostNm") != null ? row.get("profitCostNm").toString() : ""); // A열
+			excelRow.createCell(1).setCellValue(row.get("bigGroupNm") != null ? row.get("bigGroupNm").toString() : ""); // B열
 			excelRow.createCell(2).setCellValue(row.get("middleGroupNm") != null ? row.get("middleGroupNm").toString() : "");
 			excelRow.createCell(3).setCellValue(row.get("smallGroupNm") != null ? row.get("smallGroupNm").toString() : "");
 			excelRow.createCell(4).setCellValue(row.get("detailGroupNm") != null ? row.get("detailGroupNm").toString() : "");
@@ -372,11 +372,11 @@ public class AccountController {
 
 		// 5. 응답 헤더 및 전송
 		String filename = URLEncoder.encode("회계정보_현재페이지.xlsx", "UTF-8").replaceAll("\\+", "%20");
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + filename);
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 응답이 엑셀(XLSX)임을 명시
+		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + filename); // 브라우저에게 “이건 다운로드할 파일이다” 라고 알림
 
-		workbook.write(response.getOutputStream()); // response.getOutputStream() → 서버에서 클라이언트(브라우저)로 나가는 데이터 스트림. 엑셀 파일 내용을 이 스트림에 직접 써서 → 브라우저로 전송.
-		workbook.close();
+		workbook.write(response.getOutputStream()); // 서버에서 생성한 엑셀 내용을 브라우저로 전송
+		workbook.close(); // 사용한 메모리 자원 해제
 
 		System.out.println("엑셀다운 pageIndex: " + pageIndex + ", recordCountPerPage: " + recordCountPerPage);
 	

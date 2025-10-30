@@ -26,7 +26,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("accountDAO")
 public class AccountDAO extends EgovAbstractMapper{
-
+	
 	
 	// 회계 정보 등록 (ACCOUNT_TB)
 	public void insertAccount(EgovMap param){

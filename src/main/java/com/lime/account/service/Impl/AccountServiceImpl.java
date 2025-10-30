@@ -82,15 +82,15 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 
-    // 회계 정보 목록 조회 (뷰 기반, 페이징)
+    // 회계 정보 목록 조회 (페이징)
     @Override
     public List<EgovMap> getAccountList(EgovMap param) {
         System.out.println("[AccountServiceImpl] getAccountList() 호출됨");
         // 기본 페이징 보정 (null 방지)
-        if (param.get("firstIndex") == null) {
+        if (param.get("firstIndex") == null) { // 현재 페이지 번호
             param.put("firstIndex", 0);
         }
-        if (param.get("recordCountPerPage") == null) {
+        if (param.get("recordCountPerPage") == null) { // 페이지당 보여줄 데이터 개수
             param.put("recordCountPerPage", 10);
         }
         System.out.println("목록 조회 파라미터: firstIndex=" + param.get("firstIndex")
